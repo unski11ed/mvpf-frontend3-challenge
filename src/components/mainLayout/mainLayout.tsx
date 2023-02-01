@@ -9,7 +9,7 @@ import { Box } from '../box/box';
 const LayoutWrap = styled(Box)`
   height: 100vh;
   display: grid;
-  grid-template-columns: 300px auto;
+  grid-template-columns: auto 1fr;
   grid-template-rows: ${({ theme }) => theme.components.appBar.height} auto;
   grid-template-areas:
     'navbar navbar'
