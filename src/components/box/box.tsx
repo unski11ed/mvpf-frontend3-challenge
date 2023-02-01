@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 
 import StylableComponent from '@app/types/stylableComponent';
 
@@ -8,4 +8,6 @@ export interface BoxProps extends StylableComponent {
   children: React.ReactNode;
 }
 
-export const Box = ({ ...props }: BoxProps) => <div {...props} />;
+export const Box = forwardRef<HTMLDivElement, BoxProps>(({ ...props }, ref) => (
+  <div {...props} ref={ref} />
+));

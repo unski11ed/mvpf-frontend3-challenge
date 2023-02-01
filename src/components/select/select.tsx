@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
 
-import { StylableComponentProps } from '@app/types';
+import { FieldComponentProps, StylableComponentProps } from '@app/types';
 import { Box } from '../box';
 import { UnstyledButton } from '../unstyledButton';
+import { OutsideClick } from '../outsideClick';
 
 const SelectWrap = styled(Box)`
   position: relative;
@@ -75,20 +76,21 @@ const SelectCustomListItem = styled(UnstyledButton)<{ active?: boolean }>(
 );
 
 export type SelectOption = {
-  value: string | number | null;
+  value: string;
   label: string;
 };
 
-export interface SelectProps extends StylableComponentProps {
+export interface SelectProps
+  extends StylableComponentProps,
+    FieldComponentProps {
   children: React.ReactNode;
-  value: null | string | number;
-  onChange: (value: null | string | number) => void;
 }
 
 export const Select = ({
   children,
   value,
   onChange,
+  name,
   ...styleProps
 }: SelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -98,14 +100,14 @@ export const Select = ({
     )
     .map<SelectOption>((child) => ({
       label: child.props.children as string,
-      value: (child.props.value as string | number) ?? null,
+      value: (child.props.value as string) ?? null,
     }));
 
   const toggleList = () => {
     setIsOpen(!isOpen);
   };
 
-  const handleChange = (newValue: string | number | null) => {
+  const handleChange = (newValue: string) => {
     onChange(newValue);
 
     setIsOpen(false);
@@ -114,34 +116,43 @@ export const Select = ({
   const selectedOption = options.find((opt) => opt.value === value);
 
   return (
-    <SelectWrap {...styleProps}>
-      {/* Fallback to native select for mobile devices */}
-      <NativeSelect
-        value={value ?? ''}
-        onChange={(ev) => handleChange(ev.target.value ?? null)}
-      >
-        {children}
-      </NativeSelect>
+    <OutsideClick
+      onClickOutside={() => {
+        setIsOpen(false);
+      }}
+    >
+      {({ ref }) => (
+        <SelectWrap {...styleProps} ref={ref as React.Ref<HTMLDivElement>}>
+          {/* Fallback to native select for mobile devices */}
+          <NativeSelect
+            value={value ?? ''}
+            onChange={(ev) => handleChange(ev.target.value ?? null)}
+            name={name}
+          >
+            {children}
+          </NativeSelect>
 
-      <SelectTrigger onClick={toggleList}>
-        {selectedOption?.label}
-      </SelectTrigger>
+          <SelectTrigger onClick={toggleList}>
+            {selectedOption?.label}
+          </SelectTrigger>
 
-      {isOpen && (
-        <SelectCustomList>
-          {options.map((option) => (
-            <SelectCustomListItem
-              key={option.value}
-              onClick={() => {
-                handleChange(option.value);
-              }}
-              active={selectedOption?.value === option.value}
-            >
-              {option.label}
-            </SelectCustomListItem>
-          ))}
-        </SelectCustomList>
+          {isOpen && (
+            <SelectCustomList>
+              {options.map((option) => (
+                <SelectCustomListItem
+                  key={option.value}
+                  onClick={() => {
+                    handleChange(option.value);
+                  }}
+                  active={selectedOption?.value === option.value}
+                >
+                  {option.label}
+                </SelectCustomListItem>
+              ))}
+            </SelectCustomList>
+          )}
+        </SelectWrap>
       )}
-    </SelectWrap>
+    </OutsideClick>
   );
 };
