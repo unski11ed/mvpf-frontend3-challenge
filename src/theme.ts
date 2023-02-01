@@ -98,6 +98,33 @@ const defaultTheme = {
       paddingX: baseTheme.spacing(1.5),
       fontSize: '14px',
     },
+    card: {
+      background: baseTheme.palette.blue.light,
+      radius: '10px',
+      padding: `${baseTheme.spacing(2)}`,
+    },
+    accordion: {
+      contentMargin: baseTheme.spacing(2),
+      itemBackground: baseTheme.palette.white.main,
+      itemRadius: '10px',
+      itemPadding: baseTheme.spacing(3),
+      itemFontWeight: baseTheme.typography.fontWeightBold,
+      itemFontSize: baseTheme.typography.fontSize,
+      itemsGap: baseTheme.spacing(0.5),
+    },
+    table: {
+      headBackground: baseTheme.palette.white.main,
+      oddRowBackground: baseTheme.palette.blue.light,
+      evenRowBackground: baseTheme.palette.white.main,
+      cellPadding: `${baseTheme.spacing(1)} ${baseTheme.spacing(1)}`,
+    },
+    button: {
+      backgroundColor: baseTheme.palette.blue.main,
+      backgroundColorHighlight: baseTheme.palette.blue.dark,
+      color: baseTheme.palette.white.main,
+      padding: `${baseTheme.spacing(1)} ${baseTheme.spacing(2)}`,
+      radius: '5px',
+    },
   },
 };
 

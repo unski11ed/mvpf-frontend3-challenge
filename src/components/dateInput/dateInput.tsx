@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
-import { StylableComponentProps } from '@app/types';
+import { FieldComponentProps, StylableComponentProps } from '@app/types';
 import { Box } from '../box';
 
 const DateInputWrap = styled(Box)`
@@ -50,9 +50,9 @@ const DateInputMask = styled(Box)(
 `
 );
 
-export interface DateInputProps extends StylableComponentProps {
-  value: string;
-  onChange: (value: string) => void;
+export interface DateInputProps
+  extends StylableComponentProps,
+    FieldComponentProps {
   placeholder?: string;
   selectedTemplate?: (value: string) => string;
   format?: string;
@@ -67,6 +67,7 @@ export const DateInput = ({
   selectedTemplate,
   minDate,
   maxDate,
+  name,
   ...styleProps
 }: DateInputProps) => {
   const changeHandler = (ev: React.ChangeEvent<HTMLInputElement>) => {
@@ -80,6 +81,7 @@ export const DateInput = ({
         min={minDate}
         max={maxDate}
         value={value}
+        name={name}
         onChange={changeHandler}
       />
       <DateInputMask>
