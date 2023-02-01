@@ -7,6 +7,7 @@ import { Box } from '../box/box';
 
 const NavbarWrap = styled(Box)`
   grid-area: navbar;
+  border-bottom: 1px solid ${({ theme }) => theme.palette.gray.light};
 `;
 
 export interface MainLayoutNavbarProps extends StylableComponentProps {

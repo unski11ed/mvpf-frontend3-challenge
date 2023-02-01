@@ -67,7 +67,36 @@ const defaultTheme = {
     appBar: {
       border: `1px solid ${baseTheme.palette.gray.light}`,
       height: baseTheme.spacing(10),
-      horizontalPadding: baseTheme.spacing(3),
+      horizontalPadding: baseTheme.spacing(4),
+    },
+    avatar: {
+      background: baseTheme.palette.yellow.main,
+      textColor: baseTheme.palette.white.main,
+      fontSize: '23px',
+      fontWeight: baseTheme.typography.fontWeightBold,
+      radius: '5px',
+      size: '43px',
+    },
+    sideNav: {
+      itemPadding: `${baseTheme.spacing(1.5)} ${baseTheme.spacing(4)}`,
+    },
+    select: {
+      background: baseTheme.palette.green.main,
+      menuRadius: '5px',
+      menuMinWidth: '135px',
+      menuItemPaddingY: baseTheme.spacing(0.5),
+      menuItemPaddingX: baseTheme.spacing(1.5),
+      color: baseTheme.palette.white.main,
+      colorFocus: baseTheme.palette.gray.light,
+      fontSize: '14px',
+    },
+    dateInput: {
+      background: baseTheme.palette.green.main,
+      radius: '5px',
+      color: baseTheme.palette.white.main,
+      paddingY: baseTheme.spacing(1),
+      paddingX: baseTheme.spacing(1.5),
+      fontSize: '14px',
     },
   },
 };
