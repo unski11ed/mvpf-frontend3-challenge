@@ -1,14 +1,7 @@
 import React from 'react';
-import {
-  PieChart,
-  Pie,
-  Cell,
-  PieLabelRenderProps,
-  ResponsiveContainer,
-} from 'recharts';
+import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 
 import { StylableComponentProps } from '@app/types';
-import { Box } from '../box';
 
 const RADIAN = Math.PI / 180;
 const renderCustomizedLabel = ({
@@ -18,7 +11,14 @@ const renderCustomizedLabel = ({
   innerRadius,
   outerRadius,
   percent,
-}: PieLabelRenderProps) => {
+}: {
+  cx: number;
+  cy: number;
+  midAngle: number;
+  innerRadius: number;
+  outerRadius: number;
+  percent: number;
+}) => {
   const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
   const x = cx + radius * Math.cos(-midAngle * RADIAN);
   const y = cy + radius * Math.sin(-midAngle * RADIAN);
@@ -46,27 +46,24 @@ export interface ChartDonutProps extends StylableComponentProps {
   series: ChartDonutSeries[];
 }
 
-export const ChartDonut = ({ series }: ChartDonutProps) => {
+export const ChartDonut = ({ series, ...styleProps }: ChartDonutProps) => {
   return (
-    <Box style={{ width: '800px', height: '600px' }}>
-      <ResponsiveContainer>
-        <PieChart>
-          <Pie
-            data={series}
-            innerRadius={180}
-            outerRadius={290}
-            label={renderCustomizedLabel}
-            labelLine={false}
-            fill="#8884d8"
-            paddingAngle={0}
-            dataKey="value"
-          >
-            {series.map((entry) => (
-              <Cell key={`cell-${entry.name}`} fill={entry.color} />
-            ))}
-          </Pie>
-        </PieChart>
-      </ResponsiveContainer>
-    </Box>
+    <ResponsiveContainer {...styleProps}>
+      <PieChart>
+        <Pie
+          data={series}
+          innerRadius="55%"
+          outerRadius="90%"
+          label={renderCustomizedLabel}
+          labelLine={false}
+          paddingAngle={0}
+          dataKey="value"
+        >
+          {series.map((entry) => (
+            <Cell key={`cell-${entry.name}`} fill={entry.color} />
+          ))}
+        </Pie>
+      </PieChart>
+    </ResponsiveContainer>
   );
 };

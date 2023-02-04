@@ -5,6 +5,7 @@ import type { AppProps } from 'next/app';
 import { ThemeProvider } from '@emotion/react';
 import { appWithTranslation } from 'next-i18next';
 import styled from '@emotion/styled';
+import { Hydrate, QueryClient, QueryClientProvider } from 'react-query';
 
 import {
   MainLayout,
@@ -39,6 +40,7 @@ const LogoContainer = styled(Box)`
 
 function App({ Component, pageProps }: AppProps) {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [queryClient] = React.useState(() => new QueryClient());
 
   return (
     <>
@@ -48,55 +50,59 @@ function App({ Component, pageProps }: AppProps) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <ThemeProvider theme={defaultTheme}>
-        <MainLayout>
-          <MainLayoutNavbar>
-            <AppBar>
-              <LogoContainer>
-                <Image src={logoImage} alt="Brand name" />
-                <UnstyledButton
-                  type="button"
-                  onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-                >
-                  <Image src={iconSidebar} alt="Toggle sidebar" />
-                </UnstyledButton>
-              </LogoContainer>
+        <QueryClientProvider client={queryClient}>
+          <Hydrate state={pageProps.dehydratedState}>
+            <MainLayout>
+              <MainLayoutNavbar>
+                <AppBar>
+                  <LogoContainer>
+                    <Image src={logoImage} alt="Brand name" />
+                    <UnstyledButton
+                      type="button"
+                      onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+                    >
+                      <Image src={iconSidebar} alt="Toggle sidebar" />
+                    </UnstyledButton>
+                  </LogoContainer>
 
-              <LoggedInUser />
-            </AppBar>
-          </MainLayoutNavbar>
-          <MainLayoutSidebar>
-            <SideNav collapsed={sidebarCollapsed}>
-              <SideNavItem
-                title="Overview"
-                to="/"
-                icon={<Image src={navIconOverview} alt="Overview" />}
-              />
-              <SideNavItem
-                title="Widgets"
-                to="/widgets"
-                icon={<Image src={navIconWidgets} alt="Widgets" />}
-              />
-              <SideNavItem
-                title="Payments"
-                to="/payments"
-                icon={<Image src={navIconPayments} alt="Payments" />}
-              />
-              <SideNavItem
-                title="Reports"
-                to="/reports"
-                icon={<Image src={navIconReports} alt="Reports" />}
-              />
-              <SideNavItem
-                title="Settings"
-                to="/settings"
-                icon={<Image src={navIconSettings} alt="Settings" />}
-              />
-            </SideNav>
-          </MainLayoutSidebar>
-          <MainLayoutContent>
-            <Component {...pageProps} />
-          </MainLayoutContent>
-        </MainLayout>
+                  <LoggedInUser />
+                </AppBar>
+              </MainLayoutNavbar>
+              <MainLayoutSidebar>
+                <SideNav collapsed={sidebarCollapsed}>
+                  <SideNavItem
+                    title="Overview"
+                    to="/"
+                    icon={<Image src={navIconOverview} alt="Overview" />}
+                  />
+                  <SideNavItem
+                    title="Widgets"
+                    to="/widgets"
+                    icon={<Image src={navIconWidgets} alt="Widgets" />}
+                  />
+                  <SideNavItem
+                    title="Payments"
+                    to="/payments"
+                    icon={<Image src={navIconPayments} alt="Payments" />}
+                  />
+                  <SideNavItem
+                    title="Reports"
+                    to="/reports"
+                    icon={<Image src={navIconReports} alt="Reports" />}
+                  />
+                  <SideNavItem
+                    title="Settings"
+                    to="/settings"
+                    icon={<Image src={navIconSettings} alt="Settings" />}
+                  />
+                </SideNav>
+              </MainLayoutSidebar>
+              <MainLayoutContent>
+                <Component {...pageProps} />
+              </MainLayoutContent>
+            </MainLayout>
+          </Hydrate>
+        </QueryClientProvider>
       </ThemeProvider>
     </>
   );

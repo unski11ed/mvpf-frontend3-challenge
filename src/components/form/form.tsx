@@ -5,6 +5,7 @@ import { StylableComponentProps } from '@app/types';
 import FormContext from './formContext';
 
 export interface FormProps<TSubmitData> extends StylableComponentProps {
+  initialData: Partial<TSubmitData>;
   onSubmit: (data: TSubmitData) => void;
   onChange?: (data: Partial<TSubmitData>) => Partial<TSubmitData>;
   children: React.ReactNode;
@@ -12,11 +13,12 @@ export interface FormProps<TSubmitData> extends StylableComponentProps {
 
 export function Form<TSubmitData extends { [key: string]: string } = {}>({
   children,
+  initialData,
   onChange,
   onSubmit,
   ...styleProps
 }: FormProps<TSubmitData>) {
-  const [formData, setFormData] = useState<Partial<TSubmitData>>({});
+  const [formData, setFormData] = useState<Partial<TSubmitData>>(initialData);
   const setFieldValue = useCallback(
     (fieldName: keyof TSubmitData, value: string) => {
       const updatedData = {

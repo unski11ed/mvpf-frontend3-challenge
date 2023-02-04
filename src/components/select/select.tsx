@@ -56,7 +56,9 @@ const SelectCustomList = styled(Box)(
 `
 );
 
-const SelectCustomListItem = styled(UnstyledButton)<{ active?: boolean }>(
+const SelectCustomListItem = styled(UnstyledButton, {
+  shouldForwardProp: (prop) => prop !== 'active',
+})<{ active?: boolean }>(
   ({ theme, active }) => `
   padding: ${theme.components.select.menuItemPaddingY} ${
     theme.components.select.menuItemPaddingX

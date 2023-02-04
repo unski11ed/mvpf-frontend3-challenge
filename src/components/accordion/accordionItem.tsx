@@ -24,7 +24,9 @@ const AccordionItemTitle = styled(UnstyledButton)(
 `
 );
 
-const AccordionItemContent = styled(Box)<{ collapsed?: boolean }>(
+const AccordionItemContent = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'collapsed',
+})<{ collapsed?: boolean }>(
   ({ collapsed, theme }) => `
   margin-top: ${theme.components.accordion.contentMargin};
   margin-bottom: calc(${theme.components.accordion.contentMargin} - ${

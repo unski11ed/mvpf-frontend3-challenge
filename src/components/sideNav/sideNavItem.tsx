@@ -10,9 +10,9 @@ const StyledLink = styled(Link)`
   text-decoration: none;
 `;
 
-const LinkContent = styled(Box)<
-  BoxProps & { active: boolean; collapsed: boolean }
->`
+const LinkContent = styled(Box, {
+  shouldForwardProp: (prop) => !['active', 'collapsed'].includes(prop),
+})<BoxProps & { active: boolean; collapsed: boolean }>`
   ${(props) => !props.active && 'filter: grayscale(1);'}
   display: flex;
   align-items: center;

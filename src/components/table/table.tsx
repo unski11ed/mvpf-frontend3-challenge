@@ -18,10 +18,10 @@ export const Table = styled.table(
     text-align: center;
     border: none;
 
-    :first-child {
+    :first-of-type {
       text-align: left;
     }
-    :last-child {
+    :last-of-type {
       text-align: right;
     }
   }
@@ -29,10 +29,10 @@ export const Table = styled.table(
     font-weight: normal;
     background-color: ${theme.components.table.headBackground};
   }
-  tr:nth-child(odd) {
+  tr:nth-of-type(odd) {
     background-color: ${theme.components.table.oddRowBackground};
   }
-  tr:nth-child(even) {
+  tr:nth-of-type(even) {
     background-color: ${theme.components.table.evenRowBackground};
   }
 `

@@ -5,6 +5,8 @@ import { StylableComponentProps } from '@app/types';
 
 const ContentWrap = styled.main`
   grid-area: content;
+  padding: ${({ theme }) =>
+    `${theme.spacing(4)} ${theme.spacing(4)} ${theme.spacing(4)} 0`};
 `;
 
 export interface MainLayoutContentProps extends StylableComponentProps {
