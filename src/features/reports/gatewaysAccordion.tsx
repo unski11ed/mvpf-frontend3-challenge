@@ -4,6 +4,7 @@ import { Accordion, AccordionItem } from '@app/components';
 
 import { SummaryHeader } from './summaryHeader';
 import { AccordionPaymentsTable } from './accordionPaymentsTable';
+import filteredPayments from './filteredPayments';
 
 export interface GatewayAccordionProps extends StylableComponentProps {
   payments: Payment[];
@@ -27,31 +28,39 @@ export const GatewayAccordion = ({
       onActiveIdChange={setOpenGatewayId}
       {...styleProps}
     >
-      {gateways.map((gateway) => (
-        <AccordionItem
-          key={gateway.gatewayId}
-          id={gateway.gatewayId}
-          title={
-            <SummaryHeader
-              title={gateway.name}
-              total={payments
-                .filter(
-                  (payment) =>
-                    payment.gatewayId === gateway.gatewayId &&
-                    payment.projectId === projectId
-                )
-                .reduce((acc, payment) => acc + payment.amount, 0)}
+      {gateways.map((gateway) => {
+        const gatewayPayments =
+          filteredPayments(payments, {
+            projectId,
+            gatewayId: gateway.gatewayId,
+          }) ?? [];
+
+        return gatewayPayments.length > 0 ? (
+          <AccordionItem
+            key={gateway.gatewayId}
+            id={gateway.gatewayId}
+            title={
+              <SummaryHeader
+                title={gateway.name}
+                total={payments
+                  .filter(
+                    (payment) =>
+                      payment.gatewayId === gateway.gatewayId &&
+                      payment.projectId === projectId
+                  )
+                  .reduce((acc, payment) => acc + payment.amount, 0)}
+              />
+            }
+          >
+            <AccordionPaymentsTable
+              gateways={gateways}
+              payments={gatewayPayments}
+              projectId={projectId}
+              gatewayId={gateway.gatewayId}
             />
-          }
-        >
-          <AccordionPaymentsTable
-            gateways={gateways}
-            payments={payments}
-            projectId={projectId}
-            gatewayId={gateway.gatewayId}
-          />
-        </AccordionItem>
-      ))}
+          </AccordionItem>
+        ) : null;
+      })}
     </Accordion>
   );
 };

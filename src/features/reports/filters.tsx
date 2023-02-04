@@ -58,6 +58,8 @@ export const ReportFilters = ({
           {(fieldProps) => (
             <DateInput
               {...fieldProps}
+              placeholder="From date"
+              selectedTemplate={(value) => `From ${value}`}
               minDate="2021-01-01"
               maxDate="2021-12-31"
             />
@@ -67,6 +69,8 @@ export const ReportFilters = ({
           {(fieldProps) => (
             <DateInput
               {...fieldProps}
+              placeholder="To date"
+              selectedTemplate={(value) => `To ${value}`}
               minDate="2021-01-01"
               maxDate="2021-12-31"
             />

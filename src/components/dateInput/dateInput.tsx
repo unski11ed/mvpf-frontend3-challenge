@@ -2,6 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 
 import { FieldComponentProps, StylableComponentProps } from '@app/types';
+import formatDate from '@app/utils/formatDate';
 import { Box } from '../box';
 
 const DateInputWrap = styled(Box)`
@@ -86,7 +87,7 @@ export const DateInput = ({
       />
       <DateInputMask>
         {value
-          ? (selectedTemplate as (value: string) => string)(value)
+          ? (selectedTemplate as (value: string) => string)(formatDate(value))
           : placeholder}
       </DateInputMask>
     </DateInputWrap>

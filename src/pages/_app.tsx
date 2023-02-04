@@ -39,8 +39,17 @@ const LogoContainer = styled(Box)`
 `;
 
 function App({ Component, pageProps }: AppProps) {
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const [queryClient] = React.useState(() => new QueryClient());
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
+  const [queryClient] = React.useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            suspense: true,
+          },
+        },
+      })
+  );
 
   return (
     <>
