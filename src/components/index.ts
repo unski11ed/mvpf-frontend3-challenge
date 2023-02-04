@@ -14,3 +14,4 @@ export * from './form';
 export * from './button';
 export * from './outsideClick';
 export * from './chartDonut';
+export * from './commonErrorBoundary';

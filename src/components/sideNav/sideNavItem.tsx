@@ -17,6 +17,10 @@ const LinkContent = styled(Box, {
   display: flex;
   align-items: center;
   padding: ${(props) => props.theme.components.sideNav.itemPadding};
+  color: ${(props) =>
+    props.active
+      ? props.theme.components.sideNav.activeColor
+      : props.theme.components.sideNav.color};
   > * + * {
     text-decoration: none;
     margin-left: ${(props) => props.theme.spacing(2)};

@@ -91,6 +91,8 @@ const defaultTheme = {
     },
     sideNav: {
       itemPadding: `${baseTheme.spacing(1.5)} ${baseTheme.spacing(4)}`,
+      activeColor: baseTheme.palette.blue.main,
+      color: baseTheme.palette.gray.main,
     },
     select: {
       background: baseTheme.palette.green.main,

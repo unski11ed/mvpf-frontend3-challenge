@@ -2,29 +2,32 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { dehydrate, DehydratedState, QueryClient } from 'react-query';
 import { useRouter } from 'next/router';
+import { GetServerSideProps, NextPage } from 'next';
+import Image from 'next/image';
 
-import { Typography, Box } from '@app/components';
+import { Typography, Box, CommonErrorBoundary } from '@app/components';
 import { fetchGateways, fetchProjects, fetchReport } from '@app/hooks';
 import {
   ReportFilters,
   ReportOverview,
   ReportSummaryChart,
   ReportTotal,
+  PaymentsAvailable,
 } from '@app/features/reports';
 import { ReportFiltersState } from '@app/types';
-import { GetServerSideProps, NextPage } from 'next';
+import emptyDataImage from '@public/empty-data.svg';
 
 const ReportsLayout = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'chartVisible',
-})<{ chartVisible?: boolean }>`
+  shouldForwardProp: (prop) => prop !== 'columned',
+})<{ columned?: boolean }>`
   height: 100%;
   display: grid;
   grid-auto-rows: 1fr;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: auto 1fr;
   gap: ${({ theme }) => `${theme.spacing(4)} ${theme.spacing(4)}`};
-  grid-template-areas: ${({ chartVisible }) =>
-    chartVisible
+  grid-template-areas: ${({ columned }) =>
+    columned
       ? `
         'reports-header reports-header'
         'reports-details reports-chart'
@@ -68,6 +71,22 @@ const ReportTotalStyled = styled(ReportTotal)`
   flex: 0 0 auto;
 `;
 
+const EmptyPlaceholder = styled(Box)`
+  grid-area: reports-details;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  > * {
+    text-align: center;
+    max-width: 470px;
+
+    img {
+      margin-top: 50px;
+    }
+  }
+`;
+
 const parseFilters = (queryObject: {
   [key: string]: string | string[] | undefined;
 }) => ({
@@ -109,32 +128,59 @@ const Reports: NextPage<ReportsProps> = () => {
   );
 
   return (
-    <ReportsLayout chartVisible={renderChart}>
-      <ReportsHeader>
-        <HeaderTitle>
-          <Typography type="h1">Reports</Typography>
-          <Typography type="subtitle">
-            Easily generate a report of your transactions
-          </Typography>
-        </HeaderTitle>
-        <ReportFilters
-          initialFilters={reportFilters}
-          onChange={setReportFilters}
-        />
-      </ReportsHeader>
-      <ReportsDetails>
-        <ReportOverview filters={reportFilters} />
+    <CommonErrorBoundary>
+      <PaymentsAvailable filters={reportFilters}>
+        {({ paymentsAvailable }) => (
+          <ReportsLayout columned={renderChart && paymentsAvailable}>
+            <ReportsHeader>
+              <HeaderTitle>
+                <Typography type="h1">Reports</Typography>
+                <Typography type="subtitle">
+                  Easily generate a report of your transactions
+                </Typography>
+              </HeaderTitle>
+              <ReportFilters
+                initialFilters={reportFilters}
+                onChange={setReportFilters}
+              />
+            </ReportsHeader>
+            {paymentsAvailable ? (
+              <>
+                <ReportsDetails>
+                  <ReportOverview filters={reportFilters} />
 
-        {!renderChart && <ReportTotalStyled filters={reportFilters} />}
-      </ReportsDetails>
-      {renderChart && (
-        <ReportsChart>
-          <ReportSummaryChartStyled filters={reportFilters} />
+                  {!renderChart && (
+                    <ReportTotalStyled filters={reportFilters} />
+                  )}
+                </ReportsDetails>
+                {renderChart && (
+                  <ReportsChart>
+                    <ReportSummaryChartStyled filters={reportFilters} />
 
-          <ReportTotalStyled filters={reportFilters} />
-        </ReportsChart>
-      )}
-    </ReportsLayout>
+                    <ReportTotalStyled filters={reportFilters} />
+                  </ReportsChart>
+                )}
+              </>
+            ) : (
+              <EmptyPlaceholder>
+                <Box>
+                  <Typography type="h1">No reports</Typography>
+                  <Typography type="subtitle">
+                    Currently you have no data for the reports to be generated.
+                    Once you start generating traffic through the Balance
+                    application the reports will be shown.
+                  </Typography>
+                  <Image
+                    src={emptyDataImage}
+                    alt="Visual placholder for empty data"
+                  />
+                </Box>
+              </EmptyPlaceholder>
+            )}
+          </ReportsLayout>
+        )}
+      </PaymentsAvailable>
+    </CommonErrorBoundary>
   );
 };
 

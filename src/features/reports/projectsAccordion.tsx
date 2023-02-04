@@ -4,6 +4,7 @@ import { Gateway, Payment, Project, StylableComponentProps } from '@app/types';
 import { Accordion, AccordionItem } from '@app/components';
 import { SummaryHeader } from './summaryHeader';
 import { AccordionPaymentsTable } from './accordionPaymentsTable';
+import filteredPayments from './filteredPayments';
 
 export interface ProjectsAccordionProps extends StylableComponentProps {
   payments: Payment[];
@@ -29,26 +30,32 @@ export const ProjectsAccordion = ({
       onActiveIdChange={setOpenProjectId}
       {...styleProps}
     >
-      {projects.map((project) => (
-        <AccordionItem
-          key={project.projectId}
-          id={project.projectId}
-          title={
-            <SummaryHeader
-              title={project.name}
-              total={payments
-                .filter((payment) => payment.projectId === project.projectId)
-                .reduce((acc, payment) => acc + payment.amount, 0)}
+      {projects.map((project) => {
+        const projectPayments =
+          filteredPayments(payments, { projectId: project.projectId }) ?? [];
+
+        return projectPayments.length > 0 ? (
+          <AccordionItem
+            key={project.projectId}
+            id={project.projectId}
+            title={
+              <SummaryHeader
+                title={project.name}
+                total={projectPayments.reduce(
+                  (acc, payment) => acc + payment.amount,
+                  0
+                )}
+              />
+            }
+          >
+            <AccordionPaymentsTable
+              gateways={gateways}
+              payments={projectPayments}
+              gatewayId={gatewayId}
             />
-          }
-        >
-          <AccordionPaymentsTable
-            gateways={gateways}
-            payments={payments}
-            gatewayId={gatewayId}
-          />
-        </AccordionItem>
-      ))}
+          </AccordionItem>
+        ) : null;
+      })}
     </Accordion>
   );
 };
