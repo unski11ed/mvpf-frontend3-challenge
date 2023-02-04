@@ -20,6 +20,12 @@ const baseTheme = {
       light: '#F3F6F9',
       main: '#7E8299',
     },
+    red: {
+      main: '#F24E1E',
+    },
+    purple: {
+      main: '#A259FF',
+    },
   },
   typography: {
     fontSize: '16px',
@@ -42,6 +48,12 @@ const defaultTheme = {
       fontWeight: baseTheme.typography.fontWeightBold,
       color: baseTheme.palette.blue.dark,
       lineHeight: '1.167em',
+    },
+    h4: {
+      fontSize: '16px',
+      fontWeight: baseTheme.typography.fontWeightBold,
+      color: baseTheme.palette.blue.dark,
+      lineHeight: '1.172em',
     },
     subtitle: {
       fontWeight: baseTheme.typography.fontWeightBold,
@@ -101,7 +113,7 @@ const defaultTheme = {
     card: {
       background: baseTheme.palette.blue.light,
       radius: '10px',
-      padding: `${baseTheme.spacing(2)}`,
+      padding: `${baseTheme.spacing(2.5)} ${baseTheme.spacing(3)}`,
     },
     accordion: {
       contentMargin: baseTheme.spacing(2),

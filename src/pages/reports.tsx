@@ -1,137 +1,163 @@
-import React, { useState } from 'react';
-import { useTheme } from '@emotion/react';
+import React from 'react';
+import styled from '@emotion/styled';
+import { dehydrate, DehydratedState, QueryClient } from 'react-query';
+import { useRouter } from 'next/router';
 
+import { Typography, Box } from '@app/components';
+import { fetchGateways, fetchProjects, fetchReport } from '@app/hooks';
 import {
-  Select,
-  DateInput,
-  Card,
-  Typography,
-  Accordion,
-  AccordionItem,
-  Table,
-  Form,
-  Field,
-  Button,
-  ChartDonut,
-} from '@app/components';
+  ReportFilters,
+  ReportOverview,
+  ReportSummaryChart,
+  ReportTotal,
+} from '@app/features/reports';
+import { ReportFiltersState } from '@app/types';
+import { GetServerSideProps, NextPage } from 'next';
 
-type Filters = {
-  projectId: string;
-  gatewayId: string;
-  from: string;
-  to: string;
-};
+const ReportsLayout = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'chartVisible',
+})<{ chartVisible?: boolean }>`
+  height: 100%;
+  display: grid;
+  grid-auto-rows: 1fr;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto 1fr;
+  gap: ${({ theme }) => `${theme.spacing(4)} ${theme.spacing(4)}`};
+  grid-template-areas: ${({ chartVisible }) =>
+    chartVisible
+      ? `
+        'reports-header reports-header'
+        'reports-details reports-chart'
+      `
+      : `
+        'reports-header reports-header'
+        'reports-details reports-details'
+      `};
+`;
 
-const Reports = () => {
-  const [activeProject, setActiveProject] = useState('project1');
-  const theme = useTheme();
+const ReportsHeader = styled(Box)`
+  grid-area: reports-header;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+`;
+
+const HeaderTitle = styled(Box)`
+  > p {
+    margin-bottom: 0;
+  }
+`;
+
+const ReportsDetails = styled(Box)`
+  grid-area: reports-details;
+`;
+
+const ReportsChart = styled(Box)`
+  grid-area: reports-chart;
+  display: flex;
+  flex-direction: column;
+`;
+
+const ReportSummaryChartStyled = styled(ReportSummaryChart)`
+  flex: 1 1 auto;
+  max-height: 50vh;
+`;
+
+const ReportTotalStyled = styled(ReportTotal)`
+  margin-top: ${({ theme }) => theme.spacing(3)};
+  flex: 0 0 auto;
+`;
+
+const parseFilters = (queryObject: {
+  [key: string]: string | string[] | undefined;
+}) => ({
+  gatewayId:
+    typeof queryObject.gatewayId === 'string' ? queryObject.gatewayId : '',
+  projectId:
+    typeof queryObject.projectId === 'string' ? queryObject.projectId : '',
+  from:
+    typeof queryObject.from === 'string' &&
+    queryObject.from.match(/^\d{4}-\d{2}-\d{2}$/)
+      ? queryObject.from
+      : '',
+  to:
+    typeof queryObject.to === 'string' &&
+    queryObject.to.match(/^\d{4}-\d{2}-\d{2}$/)
+      ? queryObject.to
+      : '',
+});
+
+interface ReportsProps {
+  dehydratedState: DehydratedState;
+}
+
+const Reports: NextPage<ReportsProps> = () => {
+  const router = useRouter();
+
+  const setReportFilters = (filters: ReportFiltersState) => {
+    router.push({
+      query: filters,
+    });
+  };
+
+  // Basic validation of URL state
+  const reportFilters = parseFilters(router.query);
+
+  const renderChart = !!(
+    (reportFilters.gatewayId && !reportFilters.projectId) ||
+    (!reportFilters.gatewayId && reportFilters.projectId)
+  );
 
   return (
-    <div>
-      <Form<Filters> onSubmit={(values) => console.log(values)}>
-        <Field name="projectId">
-          {(fieldProps) => (
-            <Select {...fieldProps}>
-              <option value="">All Projects</option>
-              <option value="project1">Project 1</option>
-              <option value="project2">Project 2</option>
-            </Select>
-          )}
-        </Field>
-        <Field name="gatewayId">
-          {(fieldProps) => (
-            <Select {...fieldProps}>
-              <option value="">All Gateways</option>
-              <option value="gateway1">Gateway 1</option>
-              <option value="gateway2">Gateway 2</option>
-            </Select>
-          )}
-        </Field>
-        <Field name="from">
-          {(fieldProps) => (
-            <DateInput
-              {...fieldProps}
-              minDate="2021-01-01"
-              maxDate="2021-12-31"
-            />
-          )}
-        </Field>
-        <Field name="to">
-          {(fieldProps) => (
-            <DateInput
-              {...fieldProps}
-              minDate="2021-01-01"
-              maxDate="2021-12-31"
-            />
-          )}
-        </Field>
+    <ReportsLayout chartVisible={renderChart}>
+      <ReportsHeader>
+        <HeaderTitle>
+          <Typography type="h1">Reports</Typography>
+          <Typography type="subtitle">
+            Easily generate a report of your transactions
+          </Typography>
+        </HeaderTitle>
+        <ReportFilters
+          initialFilters={reportFilters}
+          onChange={setReportFilters}
+        />
+      </ReportsHeader>
+      <ReportsDetails>
+        <ReportOverview filters={reportFilters} />
 
-        <Button type="submit">Generate Report</Button>
-      </Form>
+        {!renderChart && <ReportTotalStyled filters={reportFilters} />}
+      </ReportsDetails>
+      {renderChart && (
+        <ReportsChart>
+          <ReportSummaryChartStyled filters={reportFilters} />
 
-      <Card>
-        <Typography>Hello World</Typography>
-
-        <Accordion activeId={activeProject} onActiveIdChange={setActiveProject}>
-          <AccordionItem id="project1" title="Some title 1">
-            <Table>
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Transaction ID</th>
-                  <th>Amount</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>01/21/2021</td>
-                  <td>a732b</td>
-                  <td>3964 USD</td>
-                </tr>
-                <tr>
-                  <td>01/21/2021</td>
-                  <td>a732b</td>
-                  <td>3964 USD</td>
-                </tr>
-                <tr>
-                  <td>01/21/2021</td>
-                  <td>a732b</td>
-                  <td>3964 USD</td>
-                </tr>
-              </tbody>
-            </Table>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-            elementum nibh non volutpat blandit. Sed at sodales purus. Morbi
-            placerat risus sit amet quam cursus sodales. Cras rhoncus justo et
-            est semper, sed viverra purus faucibus. Nulla vel eros hendrerit
-            quam egestas porttitor.
-          </AccordionItem>
-          <AccordionItem id="project2" title="Some title 2">
-            Aenean et erat in dui elementum aliquet et vitae velit. Fusce ac
-            libero ut nibh condimentum sagittis vitae vel arcu. Quisque faucibus
-            egestas sapien. Quisque lacinia egestas odio, eu aliquet lacus
-            feugiat et. Fusce et est lectus. Vestibulum sed purus sit amet velit
-            auctor bibendum id quis dolor.
-          </AccordionItem>
-          <AccordionItem id="project3" title="Some title 3">
-            Nunc libero turpis, mollis non suscipit ut, tempor ut turpis. Duis
-            pellentesque, orci in iaculis facilisis, urna metus malesuada
-            tellus, nec suscipit arcu tellus nec tortor. Etiam scelerisque, odio
-            nec convallis bibendum, erat sapien lobortis libero, finibus
-            molestie mauris sapien sed tortor.
-          </AccordionItem>
-        </Accordion>
-      </Card>
-
-      <ChartDonut
-        series={[
-          { name: 'Project 1', value: 25, color: theme.palette.blue.main },
-          { name: 'Project 2', value: 254, color: theme.palette.yellow.dark },
-          { name: 'Project 3', value: 504, color: theme.palette.green.main },
-        ]}
-      />
-    </div>
+          <ReportTotalStyled filters={reportFilters} />
+        </ReportsChart>
+      )}
+    </ReportsLayout>
   );
+};
+
+export const getServerSideProps: GetServerSideProps<ReportsProps> = async ({
+  query,
+}) => {
+  const reportFilters = parseFilters(query);
+
+  const queryClient = new QueryClient();
+
+  await Promise.all([
+    queryClient.prefetchQuery('gateways', fetchGateways),
+    queryClient.prefetchQuery('projects', fetchProjects),
+    queryClient.prefetchQuery(['payments', reportFilters], () =>
+      fetchReport(reportFilters)
+    ),
+  ]);
+
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
+  };
 };
 
 export default Reports;

@@ -7,37 +7,50 @@ const StyledH1 = styled.h1(
   ({ theme: { typography } }) => `
   font-size: ${typography.h1.fontSize};
   font-weight: ${typography.h1.fontWeight};
-  font-weight: ${typography.h1.color};
   line-height: ${typography.h1.lineHeight};
+  margin-bottom: 0.5rem;
+  margin-top: 0;
+`
+);
+
+const StyledH4 = styled.h4(
+  ({ theme: { typography } }) => `
+  font-size: ${typography.h4.fontSize};
+  font-weight: ${typography.h4.fontWeight};
+  line-height: ${typography.h4.lineHeight};
+  margin-bottom: 0.5rem;
+  margin-top: 0;
 `
 );
 
 const StyledSubtitle = styled.p(
   ({ theme: { typography } }) => `
   font-weight: ${typography.subtitle.fontWeight};
-  font-weight: ${typography.subtitle.color};
   line-height: ${typography.subtitle.lineHeight};
-  color: ${typography.subtitle.color}
-  margin-bottom: 0;
+  color: ${typography.subtitle.color};
+  margin-top: 0;
+  margin-bottom: 1rem;
 `
 );
 
 const StyledBody = styled.span(
   ({ theme: { typography } }) => `
-  font-weight: ${typography.body.fontWeight};
+  font-weight: inherit;
   line-height: ${typography.body.lineHeight};
 `
 );
 
 export interface TypographyProps extends StylableComponentProps {
   children?: React.ReactNode | string;
-  type?: 'body' | 'h1' | 'subtitle' | 'paragraph';
+  type?: 'body' | 'h1' | 'h4' | 'subtitle' | 'paragraph';
 }
 
 export const Typography = ({ type, ...childProps }: TypographyProps) => {
   switch (type) {
     case 'h1':
       return <StyledH1 {...childProps} />;
+    case 'h4':
+      return <StyledH4 {...childProps} />;
     case 'subtitle':
       return <StyledSubtitle {...childProps} />;
     case 'body':
