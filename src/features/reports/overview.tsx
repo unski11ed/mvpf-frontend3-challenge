@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import { useTranslation } from 'next-i18next';
 
 import { ReportFiltersState, StylableComponentProps } from '@app/types';
 import { useGateways, useProjects, useReport } from '@app/hooks';
@@ -34,6 +35,7 @@ export const ReportOverview = ({
   filters,
   ...stylableProps
 }: ReportOverviewProps) => {
+  const { t } = useTranslation('reports');
   const { data: payments } = useReport(filters);
   const { data: gateways } = useGateways();
   const { data: projects } = useProjects();
@@ -49,12 +51,12 @@ export const ReportOverview = ({
         {filters.projectId
           ? projects?.find(({ projectId }) => projectId === filters.projectId)
               ?.name
-          : 'All projects'}
+          : t('overview.allProjects')}
         {' | '}
         {filters.gatewayId
           ? gateways?.find(({ gatewayId }) => gatewayId === filters.gatewayId)
               ?.name
-          : 'All gateways'}
+          : t('overview.allGateways')}
       </OverviewHeader>
 
       {filters.gatewayId && filters.projectId && (

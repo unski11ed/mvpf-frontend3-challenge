@@ -3,7 +3,7 @@ import Head from 'next/head';
 import Image from 'next/image';
 import type { AppProps } from 'next/app';
 import { ThemeProvider } from '@emotion/react';
-import { appWithTranslation } from 'next-i18next';
+import { appWithTranslation, useTranslation } from 'next-i18next';
 import styled from '@emotion/styled';
 import { Hydrate, QueryClient, QueryClientProvider } from 'react-query';
 
@@ -41,6 +41,7 @@ const LogoContainer = styled(Box)`
 `;
 
 function App({ Component, pageProps }: AppProps) {
+  const { t } = useTranslation('common');
   const [mocksInitialized, setMocksInitialized] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
   const [queryClient] = React.useState(
@@ -92,29 +93,54 @@ function App({ Component, pageProps }: AppProps) {
                 <MainLayoutSidebar>
                   <SideNav collapsed={sidebarCollapsed}>
                     <SideNavItem
-                      title="Overview"
+                      title={t('sideNav.overview')}
                       to="/"
-                      icon={<Image src={navIconOverview} alt="Overview" />}
+                      icon={
+                        <Image
+                          src={navIconOverview}
+                          alt={t('sideNav.overview')}
+                        />
+                      }
                     />
                     <SideNavItem
-                      title="Widgets"
+                      title={t('sideNav.widgets')}
                       to="/widgets"
-                      icon={<Image src={navIconWidgets} alt="Widgets" />}
+                      icon={
+                        <Image
+                          src={navIconWidgets}
+                          alt={t('sideNav.widgets')}
+                        />
+                      }
                     />
                     <SideNavItem
-                      title="Payments"
+                      title={t('sideNav.payments')}
                       to="/payments"
-                      icon={<Image src={navIconPayments} alt="Payments" />}
+                      icon={
+                        <Image
+                          src={navIconPayments}
+                          alt={t('sideNav.payments')}
+                        />
+                      }
                     />
                     <SideNavItem
-                      title="Reports"
+                      title={t('sideNav.reports')}
                       to="/reports"
-                      icon={<Image src={navIconReports} alt="Reports" />}
+                      icon={
+                        <Image
+                          src={navIconReports}
+                          alt={t('sideNav.reports')}
+                        />
+                      }
                     />
                     <SideNavItem
-                      title="Settings"
+                      title={t('sideNav.settings')}
                       to="/settings"
-                      icon={<Image src={navIconSettings} alt="Settings" />}
+                      icon={
+                        <Image
+                          src={navIconSettings}
+                          alt={t('sideNav.settings')}
+                        />
+                      }
                     />
                   </SideNav>
                 </MainLayoutSidebar>

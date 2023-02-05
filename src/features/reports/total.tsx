@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import { useTranslation } from 'next-i18next';
 
 import {
   Payment,
@@ -19,6 +20,7 @@ export interface ReportTotalProps extends StylableComponentProps {
 }
 
 export const ReportTotal = ({ filters, ...styleProps }: ReportTotalProps) => {
+  const { t } = useTranslation('reports');
   const { data: payments } = useReport(filters);
   const sumPayments = (paymentsToSum: Payment[]) =>
     paymentsToSum.reduce((acc, payment) => acc + payment.amount, 0);
@@ -27,7 +29,7 @@ export const ReportTotal = ({ filters, ...styleProps }: ReportTotalProps) => {
   if (!filters.gatewayId && !filters.projectId) {
     return (
       <TotalContainer {...commonProps}>
-        TOTAL | {formatUSD(sumPayments(payments ?? []))}
+        {t('total.general', { value: formatUSD(sumPayments(payments ?? [])) })}
       </TotalContainer>
     );
   }
@@ -37,7 +39,9 @@ export const ReportTotal = ({ filters, ...styleProps }: ReportTotalProps) => {
     );
     return (
       <TotalContainer {...commonProps}>
-        PROJECT TOTAL | {formatUSD(sumPayments(projectPayments ?? []))}
+        {t('total.project', {
+          value: formatUSD(sumPayments(projectPayments ?? [])),
+        })}
       </TotalContainer>
     );
   }
@@ -47,7 +51,9 @@ export const ReportTotal = ({ filters, ...styleProps }: ReportTotalProps) => {
     );
     return (
       <TotalContainer {...commonProps}>
-        GATEWAY TOTAL | {formatUSD(sumPayments(gatewayPayments ?? []))}
+        {t('total.gateway', {
+          value: formatUSD(sumPayments(gatewayPayments ?? [])),
+        })}
       </TotalContainer>
     );
   }
@@ -58,7 +64,9 @@ export const ReportTotal = ({ filters, ...styleProps }: ReportTotalProps) => {
   );
   return (
     <TotalContainer {...commonProps}>
-      TOTAL | {formatUSD(sumPayments(specificPayments ?? []))}
+      {t('total.specific', {
+        value: formatUSD(sumPayments(specificPayments ?? [])),
+      })}
     </TotalContainer>
   );
 

@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import { StylableComponentProps } from '@app/types';
 import { Box, Typography } from '@app/components';
 import formatUSD from '@app/utils/formatUSD';
+import { withTranslation, WithTranslation } from 'next-i18next';
 
 const SummaryHeaderWrap = styled(Box)`
   display: flex;
@@ -18,13 +19,19 @@ export interface SummaryHeaderProps extends StylableComponentProps {
   total: number;
 }
 
-export const SummaryHeader = ({
-  title,
-  total,
-  ...styleProps
-}: SummaryHeaderProps) => (
-  <SummaryHeaderWrap {...styleProps}>
-    <Typography>{title}</Typography>
-    <Typography>TOTAL: {formatUSD(total)}</Typography>
-  </SummaryHeaderWrap>
+export const SummaryHeader = withTranslation('reports')(
+  ({
+    title,
+    total,
+    style,
+    t,
+    className,
+  }: SummaryHeaderProps & WithTranslation) => (
+    <SummaryHeaderWrap style={style} className={className}>
+      <Typography>{title}</Typography>
+      <Typography>
+        {t('summaryHeader.total', { value: formatUSD(total) })}
+      </Typography>
+    </SummaryHeaderWrap>
+  )
 );

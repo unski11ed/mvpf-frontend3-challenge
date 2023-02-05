@@ -1,0 +1,30 @@
+{
+  "title": "Reports",
+  "subtitle": "Easily generate a report of your transactions",
+  "emptyData.header": "No reports",
+  "emptyData.message": "Currently you have no data for the reports to be generated. Once you start generating traffic through the Balance application the reports will be shown.",
+  "emptyData.imageAlt": "Visual placholder for empty data",
+
+  "filters.allProjects": "All Projects",
+  "filters.allGateways": "All Gateways",
+  "filters.fromDatePh": "From date",
+  "filters.fromSelected": "From {{value}}",
+  "filters.toDatePh": "To date",
+  "filters.toSelected": "To {{value}}",
+  "filters.apply": "Generate Report",
+
+  "overview.allProjects": "All Projects",
+  "overview.allGateways": "All Gateways",
+
+  "paymentsTable.date": "Date",
+  "paymentsTable.gateway": "Gateway",
+  "paymentsTable.transactionId": "Transaction ID",
+  "paymentsTable.amount": "Amount",
+
+  "summaryHeader.total": "Total: {{value}}",
+
+  "total.general": "TOTAL | {{value}}",
+  "total.project": "PROJECT TOTAL | {{value}}",
+  "total.gateway": "GATEWAY TOTAL | {{value}}",
+  "total.specific": "TOTAL | {{value}}"
+}
