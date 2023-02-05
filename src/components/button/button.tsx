@@ -12,7 +12,7 @@ export const Button = styled(UnstyledButton)(
   border-radius: ${theme.components.button.radius};
 
   :hover {
-    background-color: ${theme.components.button.backgroundColorHighlight}';
+    background-color: ${theme.components.button.backgroundColorHighlight};
   }
 `
 );

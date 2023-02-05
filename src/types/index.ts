@@ -4,3 +4,4 @@ export type { Gateway, GatewayWithProjects } from './gateway';
 export type { Project, ProjectWithPayments } from './project';
 export type { default as Payment } from './payment';
 export type { default as ReportFiltersState } from './reportFiltersState';
+export type { ErrorResponse, ServerResponse } from './mocks';

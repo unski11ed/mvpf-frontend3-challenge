@@ -48,7 +48,7 @@ export interface ChartDonutProps extends StylableComponentProps {
 
 export const ChartDonut = ({ series, ...styleProps }: ChartDonutProps) => {
   return (
-    <ResponsiveContainer {...styleProps}>
+    <ResponsiveContainer {...styleProps} minWidth={200} minHeight={100}>
       <PieChart>
         <Pie
           data={series}

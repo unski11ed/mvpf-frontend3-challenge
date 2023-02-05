@@ -36,6 +36,7 @@ export const ProjectsAccordion = ({
 
         return projectPayments.length > 0 ? (
           <AccordionItem
+            data-testid="report-payment-accordion-item"
             key={project.projectId}
             id={project.projectId}
             title={

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
 import type { AppProps } from 'next/app';
@@ -20,6 +20,8 @@ import {
 } from '@app/components';
 import LoggedInUser from '@app/features/loggedInUser';
 import defaultTheme from '@app/theme';
+import config from '@app/config';
+import initMocks from '@app/mocks';
 
 import logoImage from '@public/logo.svg';
 
@@ -39,6 +41,7 @@ const LogoContainer = styled(Box)`
 `;
 
 function App({ Component, pageProps }: AppProps) {
+  const [mocksInitialized, setMocksInitialized] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
   const [queryClient] = React.useState(
     () =>
@@ -51,6 +54,14 @@ function App({ Component, pageProps }: AppProps) {
       })
   );
 
+  const renderContent = config.apiMocking ? mocksInitialized : true;
+
+  useEffect(() => {
+    if (config.apiMocking) {
+      initMocks().then(() => setMocksInitialized(true));
+    }
+  }, []);
+
   return (
     <>
       <Head>
@@ -58,61 +69,63 @@ function App({ Component, pageProps }: AppProps) {
         <meta name="description" content="Challange project" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <ThemeProvider theme={defaultTheme}>
-        <QueryClientProvider client={queryClient}>
-          <Hydrate state={pageProps.dehydratedState}>
-            <MainLayout>
-              <MainLayoutNavbar>
-                <AppBar>
-                  <LogoContainer>
-                    <Image src={logoImage} alt="Brand name" />
-                    <UnstyledButton
-                      type="button"
-                      onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-                    >
-                      <Image src={iconSidebar} alt="Toggle sidebar" />
-                    </UnstyledButton>
-                  </LogoContainer>
+      {renderContent && (
+        <ThemeProvider theme={defaultTheme}>
+          <QueryClientProvider client={queryClient}>
+            <Hydrate state={pageProps.dehydratedState}>
+              <MainLayout>
+                <MainLayoutNavbar>
+                  <AppBar>
+                    <LogoContainer>
+                      <Image src={logoImage} alt="Brand name" />
+                      <UnstyledButton
+                        type="button"
+                        onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+                      >
+                        <Image src={iconSidebar} alt="Toggle sidebar" />
+                      </UnstyledButton>
+                    </LogoContainer>
 
-                  <LoggedInUser />
-                </AppBar>
-              </MainLayoutNavbar>
-              <MainLayoutSidebar>
-                <SideNav collapsed={sidebarCollapsed}>
-                  <SideNavItem
-                    title="Overview"
-                    to="/"
-                    icon={<Image src={navIconOverview} alt="Overview" />}
-                  />
-                  <SideNavItem
-                    title="Widgets"
-                    to="/widgets"
-                    icon={<Image src={navIconWidgets} alt="Widgets" />}
-                  />
-                  <SideNavItem
-                    title="Payments"
-                    to="/payments"
-                    icon={<Image src={navIconPayments} alt="Payments" />}
-                  />
-                  <SideNavItem
-                    title="Reports"
-                    to="/reports"
-                    icon={<Image src={navIconReports} alt="Reports" />}
-                  />
-                  <SideNavItem
-                    title="Settings"
-                    to="/settings"
-                    icon={<Image src={navIconSettings} alt="Settings" />}
-                  />
-                </SideNav>
-              </MainLayoutSidebar>
-              <MainLayoutContent>
-                <Component {...pageProps} />
-              </MainLayoutContent>
-            </MainLayout>
-          </Hydrate>
-        </QueryClientProvider>
-      </ThemeProvider>
+                    <LoggedInUser />
+                  </AppBar>
+                </MainLayoutNavbar>
+                <MainLayoutSidebar>
+                  <SideNav collapsed={sidebarCollapsed}>
+                    <SideNavItem
+                      title="Overview"
+                      to="/"
+                      icon={<Image src={navIconOverview} alt="Overview" />}
+                    />
+                    <SideNavItem
+                      title="Widgets"
+                      to="/widgets"
+                      icon={<Image src={navIconWidgets} alt="Widgets" />}
+                    />
+                    <SideNavItem
+                      title="Payments"
+                      to="/payments"
+                      icon={<Image src={navIconPayments} alt="Payments" />}
+                    />
+                    <SideNavItem
+                      title="Reports"
+                      to="/reports"
+                      icon={<Image src={navIconReports} alt="Reports" />}
+                    />
+                    <SideNavItem
+                      title="Settings"
+                      to="/settings"
+                      icon={<Image src={navIconSettings} alt="Settings" />}
+                    />
+                  </SideNav>
+                </MainLayoutSidebar>
+                <MainLayoutContent>
+                  <Component {...pageProps} />
+                </MainLayoutContent>
+              </MainLayout>
+            </Hydrate>
+          </QueryClientProvider>
+        </ThemeProvider>
+      )}
     </>
   );
 }

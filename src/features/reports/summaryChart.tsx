@@ -129,7 +129,7 @@ export const ReportSummaryChart = ({
   }
 
   return (
-    <ChartContainer {...styleProps}>
+    <ChartContainer {...styleProps} data-testid="report-chart">
       <Legend>
         {chartSeries.map((series) => (
           <LegendEntry key={series.name}>

@@ -27,8 +27,29 @@ export const ReportFilters = ({
   const { data: gateways } = useGateways();
   const { data: projects } = useProjects();
 
+  const changeHandler = (filters: ReportFiltersState) => {
+    const { from, to, ...other } = filters;
+    if (from && to) {
+      const fromDate = new Date(from);
+      const toDate = new Date(to);
+
+      if (toDate < fromDate) {
+        return {
+          from,
+          ...other,
+        };
+      }
+    }
+    return filters;
+  };
+
   return (
-    <Form<ReportFiltersState> initialData={initialFilters} onSubmit={onChange}>
+    <Form<ReportFiltersState>
+      initialData={initialFilters}
+      onSubmit={onChange}
+      onChange={changeHandler}
+      data-testid="report-filters"
+    >
       <FiltersWrap {...stylableProps}>
         <Field name="projectId">
           {(fieldProps) => (
@@ -66,12 +87,12 @@ export const ReportFilters = ({
           )}
         </Field>
         <Field name="to">
-          {(fieldProps) => (
+          {(fieldProps, formData) => (
             <DateInput
               {...fieldProps}
               placeholder="To date"
               selectedTemplate={(value) => `To ${value}`}
-              minDate="2021-01-01"
+              minDate={formData.from ? formData.from : '2021-12-01'}
               maxDate="2021-12-31"
             />
           )}

@@ -37,6 +37,7 @@ export const GatewayAccordion = ({
 
         return gatewayPayments.length > 0 ? (
           <AccordionItem
+            data-testid="report-payment-accordion-item"
             key={gateway.gatewayId}
             id={gateway.gatewayId}
             title={
