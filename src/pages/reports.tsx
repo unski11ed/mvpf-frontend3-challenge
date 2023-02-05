@@ -131,7 +131,10 @@ const Reports: NextPage<ReportsProps> = () => {
     <CommonErrorBoundary>
       <PaymentsAvailable filters={reportFilters}>
         {({ paymentsAvailable }) => (
-          <ReportsLayout columned={renderChart && paymentsAvailable}>
+          <ReportsLayout
+            columned={renderChart && paymentsAvailable}
+            data-testid="reports-page"
+          >
             <ReportsHeader>
               <HeaderTitle>
                 <Typography type="h1">Reports</Typography>

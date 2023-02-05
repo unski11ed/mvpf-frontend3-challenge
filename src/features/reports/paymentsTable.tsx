@@ -22,7 +22,7 @@ export const PaymentsTable = ({
   const renderGatewayColumn = !projectId;
 
   return (
-    <Box {...styleProps}>
+    <Box {...styleProps} data-testid="report-overview-payments">
       <Table>
         <thead>
           <tr>

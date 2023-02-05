@@ -2,7 +2,7 @@ import { Project, ProjectWithPayments } from './project';
 
 export type Gateway = {
   gatewayId: string;
-  userId: string[];
+  userIds: string[];
   name: string;
   type: string;
   apiKey: string;

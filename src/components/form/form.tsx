@@ -25,9 +25,9 @@ export function Form<TSubmitData extends { [key: string]: string } = {}>({
         ...formData,
         [fieldName]: value,
       };
-      setFormData(updatedData);
+      setFormData(onChange ? onChange(updatedData) : updatedData);
     },
-    [formData]
+    [formData, onChange]
   );
   const submitHandler = (ev: React.FormEvent) => {
     ev.preventDefault();

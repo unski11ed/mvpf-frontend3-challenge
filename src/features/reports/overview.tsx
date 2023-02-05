@@ -44,7 +44,7 @@ export const ReportOverview = ({
     null;
 
   return (
-    <Card {...stylableProps}>
+    <Card {...stylableProps} data-testid="report-overview">
       <OverviewHeader type="h4">
         {filters.projectId
           ? projects?.find(({ projectId }) => projectId === filters.projectId)

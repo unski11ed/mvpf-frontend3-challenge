@@ -22,10 +22,11 @@ export const ReportTotal = ({ filters, ...styleProps }: ReportTotalProps) => {
   const { data: payments } = useReport(filters);
   const sumPayments = (paymentsToSum: Payment[]) =>
     paymentsToSum.reduce((acc, payment) => acc + payment.amount, 0);
+  const commonProps = { ...styleProps, 'data-testid': 'report-total' };
 
   if (!filters.gatewayId && !filters.projectId) {
     return (
-      <TotalContainer {...styleProps}>
+      <TotalContainer {...commonProps}>
         TOTAL | {formatUSD(sumPayments(payments ?? []))}
       </TotalContainer>
     );
@@ -35,7 +36,7 @@ export const ReportTotal = ({ filters, ...styleProps }: ReportTotalProps) => {
       (payment) => payment.projectId === filters.projectId
     );
     return (
-      <TotalContainer {...styleProps}>
+      <TotalContainer {...commonProps}>
         PROJECT TOTAL | {formatUSD(sumPayments(projectPayments ?? []))}
       </TotalContainer>
     );
@@ -45,7 +46,7 @@ export const ReportTotal = ({ filters, ...styleProps }: ReportTotalProps) => {
       (payment) => payment.gatewayId === filters.gatewayId
     );
     return (
-      <TotalContainer {...styleProps}>
+      <TotalContainer {...commonProps}>
         GATEWAY TOTAL | {formatUSD(sumPayments(gatewayPayments ?? []))}
       </TotalContainer>
     );
@@ -56,7 +57,7 @@ export const ReportTotal = ({ filters, ...styleProps }: ReportTotalProps) => {
       payment.gatewayId === filters.gatewayId
   );
   return (
-    <TotalContainer {...styleProps}>
+    <TotalContainer {...commonProps}>
       TOTAL | {formatUSD(sumPayments(specificPayments ?? []))}
     </TotalContainer>
   );

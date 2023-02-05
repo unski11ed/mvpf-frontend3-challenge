@@ -6,7 +6,10 @@ import FormContext from './formContext';
 
 export interface FieldProps {
   name: string;
-  children: (props: FieldComponentProps) => React.ReactNode;
+  children: (
+    props: FieldComponentProps,
+    fieldsData: { [field: string]: string | undefined }
+  ) => React.ReactNode;
 }
 
 export const Field = ({ name, children }: FieldProps) => {
@@ -14,11 +17,14 @@ export const Field = ({ name, children }: FieldProps) => {
 
   return (
     <>
-      {children({
-        value: data[name] || '',
-        onChange: (value) => setFieldValue(name, value),
-        name,
-      })}
+      {children(
+        {
+          value: data[name] || '',
+          onChange: (value) => setFieldValue(name, value),
+          name,
+        },
+        data
+      )}
     </>
   );
 };
