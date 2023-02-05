@@ -23,6 +23,7 @@ const SelectTrigger = styled(UnstyledButton)(
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
 
   ::after {
     content: '';

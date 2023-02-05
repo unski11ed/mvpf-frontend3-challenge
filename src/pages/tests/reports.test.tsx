@@ -38,7 +38,7 @@ describe('Reports page', () => {
     );
 
     await waitFor(() => {
-      expect(getByText('No reports')).toBeInTheDocument();
+      expect(getByText('emptyData.header')).toBeInTheDocument();
     });
   });
 

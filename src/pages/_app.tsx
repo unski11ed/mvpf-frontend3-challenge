@@ -90,7 +90,7 @@ function App({ Component, pageProps }: AppProps) {
                     <LoggedInUser />
                   </AppBar>
                 </MainLayoutNavbar>
-                <MainLayoutSidebar>
+                <MainLayoutSidebar collapsed={sidebarCollapsed}>
                   <SideNav collapsed={sidebarCollapsed}>
                     <SideNavItem
                       title={t('sideNav.overview')}

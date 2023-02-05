@@ -11,6 +11,7 @@ export const Table = styled.table(
   ({ theme }) => `
   width: 100%;
   border-collapse: collapse;
+  white-space: nowrap;
 
   th,
   td {

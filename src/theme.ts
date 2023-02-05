@@ -34,6 +34,21 @@ const baseTheme = {
     fontWeightMedium: 500,
     fontWeightBold: 700,
   },
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 600,
+      md: 900,
+      lg: 1200,
+      xl: 1536,
+    },
+    up(bp: 'xs' | 'sm' | 'md' | 'lg' | 'xl') {
+      return `@media (min-width: ${this.values[bp]}px)`;
+    },
+    down(bp: 'xs' | 'sm' | 'md' | 'lg' | 'xl') {
+      return `@media (max-width: ${this.values[bp]}px)`;
+    },
+  },
   spacing(mul: number = 1) {
     return `${this.scaleFactor * mul}px`;
   },
@@ -93,6 +108,7 @@ const defaultTheme = {
       itemPadding: `${baseTheme.spacing(1.5)} ${baseTheme.spacing(4)}`,
       activeColor: baseTheme.palette.blue.main,
       color: baseTheme.palette.gray.main,
+      backgroundColor: baseTheme.palette.white.main,
     },
     select: {
       background: baseTheme.palette.green.main,

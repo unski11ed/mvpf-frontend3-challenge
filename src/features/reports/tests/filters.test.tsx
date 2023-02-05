@@ -27,11 +27,11 @@ describe('Filters container', () => {
     );
 
     // Set Project
-    await userEvent.click(getByRole('button', { name: 'All Projects' }));
+    await userEvent.click(getByRole('button', { name: 'filters.allProjects' }));
     await userEvent.click(getByRole('button', { name: 'Project 1' }));
 
     // Set Gateway
-    await userEvent.click(getByRole('button', { name: 'All Gateways' }));
+    await userEvent.click(getByRole('button', { name: 'filters.allGateways' }));
     await userEvent.click(getByRole('button', { name: 'Gateway 1' }));
 
     // Set From date
@@ -53,8 +53,8 @@ describe('Filters container', () => {
     await waitFor(async () => {
       expect(getByRole('button', { name: 'Project 1' })).toBeVisible();
       expect(getByRole('button', { name: 'Gateway 1' })).toBeVisible();
-      expect(getByText('From 01/01/2021')).toBeInTheDocument();
-      expect(getByText('To 12/31/2021')).toBeInTheDocument();
+      expect(getByText('filters.fromSelected 01/01/2021')).toBeInTheDocument();
+      expect(getByText('filters.toSelected 12/31/2021')).toBeInTheDocument();
     });
   });
 
@@ -64,11 +64,11 @@ describe('Filters container', () => {
     );
 
     // Set Project
-    await userEvent.click(getByRole('button', { name: 'All Projects' }));
+    await userEvent.click(getByRole('button', { name: 'filters.allProjects' }));
     await userEvent.click(getByRole('button', { name: 'Project 1' }));
 
     // Set Gateway
-    await userEvent.click(getByRole('button', { name: 'All Gateways' }));
+    await userEvent.click(getByRole('button', { name: 'filters.allGateways' }));
     await userEvent.click(getByRole('button', { name: 'Gateway 1' }));
 
     // Set From date
@@ -87,7 +87,7 @@ describe('Filters container', () => {
       }
     );
 
-    await userEvent.click(getByRole('button', { name: 'Generate Report' }));
+    await userEvent.click(getByRole('button', { name: 'filters.apply' }));
 
     await waitFor(async () => {
       expect(changeCallback).toHaveBeenCalledWith({
@@ -121,7 +121,9 @@ describe('Filters container', () => {
     );
 
     await waitFor(async () => {
-      expect(queryByText('To 12/09/2021')).not.toBeInTheDocument();
+      expect(
+        queryByText('filters.toSelected 12/09/2021')
+      ).not.toBeInTheDocument();
     });
   });
 
@@ -147,7 +149,9 @@ describe('Filters container', () => {
     );
 
     await waitFor(async () => {
-      expect(queryByText('To 12/09/2021')).not.toBeInTheDocument();
+      expect(
+        queryByText('filters.toSelected 12/09/2021')
+      ).not.toBeInTheDocument();
     });
   });
 });
