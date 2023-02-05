@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import { useTranslation } from 'next-i18next';
 
 import { ReportFiltersState, StylableComponentProps } from '@app/types';
 import { useGateways } from '@app/hooks/useGateways';
@@ -24,6 +25,7 @@ export const ReportFilters = ({
   onChange,
   ...stylableProps
 }: ReportsFiltersProps) => {
+  const { t } = useTranslation('reports');
   const { data: gateways } = useGateways();
   const { data: projects } = useProjects();
 
@@ -54,7 +56,7 @@ export const ReportFilters = ({
         <Field name="projectId">
           {(fieldProps) => (
             <Select {...fieldProps}>
-              <option value="">All Projects</option>
+              <option value="">{t('filters.allProjects')}</option>
               {projects?.map(({ projectId, name }) => (
                 <option value={projectId} key={projectId}>
                   {name}
@@ -66,7 +68,7 @@ export const ReportFilters = ({
         <Field name="gatewayId">
           {(fieldProps) => (
             <Select {...fieldProps}>
-              <option value="">All Gateways</option>
+              <option value="">{t('filters.allGateways')}</option>
               {gateways?.map(({ gatewayId, name }) => (
                 <option value={gatewayId} key={gatewayId}>
                   {name}
@@ -79,8 +81,8 @@ export const ReportFilters = ({
           {(fieldProps) => (
             <DateInput
               {...fieldProps}
-              placeholder="From date"
-              selectedTemplate={(value) => `From ${value}`}
+              placeholder={t('filters.fromDatePh')}
+              selectedTemplate={(value) => t('filters.fromSelected', { value })}
               minDate="2021-01-01"
               maxDate="2021-12-31"
             />
@@ -90,15 +92,15 @@ export const ReportFilters = ({
           {(fieldProps, formData) => (
             <DateInput
               {...fieldProps}
-              placeholder="To date"
-              selectedTemplate={(value) => `To ${value}`}
+              placeholder={t('filters.toDatePh')}
+              selectedTemplate={(value) => t('filters.toSelected', { value })}
               minDate={formData.from ? formData.from : '2021-12-01'}
               maxDate="2021-12-31"
             />
           )}
         </Field>
 
-        <Button type="submit">Generate Report</Button>
+        <Button type="submit">{t('filters.apply')}</Button>
       </FiltersWrap>
     </Form>
   );

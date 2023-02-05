@@ -4,6 +4,8 @@ import { dehydrate, DehydratedState, QueryClient } from 'react-query';
 import { useRouter } from 'next/router';
 import { GetServerSideProps, NextPage } from 'next';
 import Image from 'next/image';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useTranslation } from 'next-i18next';
 
 import { Typography, Box, CommonErrorBoundary } from '@app/components';
 import { fetchGateways, fetchProjects, fetchReport } from '@app/hooks';
@@ -112,6 +114,7 @@ interface ReportsProps {
 
 const Reports: NextPage<ReportsProps> = () => {
   const router = useRouter();
+  const { t } = useTranslation('reports');
 
   const setReportFilters = (filters: ReportFiltersState) => {
     router.push({
@@ -137,10 +140,8 @@ const Reports: NextPage<ReportsProps> = () => {
           >
             <ReportsHeader>
               <HeaderTitle>
-                <Typography type="h1">Reports</Typography>
-                <Typography type="subtitle">
-                  Easily generate a report of your transactions
-                </Typography>
+                <Typography type="h1">{t('title')}</Typography>
+                <Typography type="subtitle">{t('subtitle')}</Typography>
               </HeaderTitle>
               <ReportFilters
                 initialFilters={reportFilters}
@@ -167,16 +168,11 @@ const Reports: NextPage<ReportsProps> = () => {
             ) : (
               <EmptyPlaceholder>
                 <Box>
-                  <Typography type="h1">No reports</Typography>
+                  <Typography type="h1">{t('emptyData.header')}</Typography>
                   <Typography type="subtitle">
-                    Currently you have no data for the reports to be generated.
-                    Once you start generating traffic through the Balance
-                    application the reports will be shown.
+                    {t('emptyData.message')}
                   </Typography>
-                  <Image
-                    src={emptyDataImage}
-                    alt="Visual placholder for empty data"
-                  />
+                  <Image src={emptyDataImage} alt={t('emptyData.imageAlt')} />
                 </Box>
               </EmptyPlaceholder>
             )}
@@ -189,6 +185,7 @@ const Reports: NextPage<ReportsProps> = () => {
 
 export const getServerSideProps: GetServerSideProps<ReportsProps> = async ({
   query,
+  locale,
 }) => {
   const reportFilters = parseFilters(query);
 
@@ -205,6 +202,7 @@ export const getServerSideProps: GetServerSideProps<ReportsProps> = async ({
   return {
     props: {
       dehydratedState: dehydrate(queryClient),
+      ...(await serverSideTranslations(locale ?? 'en', ['common', 'reports'])),
     },
   };
 };

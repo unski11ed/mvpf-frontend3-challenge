@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import { StylableComponentProps } from '@app/types';
 import { Box } from '../box';
 
-const CardWrap = styled(Box)(
+export const Card = styled(Box)(
   ({ theme }) => `
   background: ${theme.components.card.background};
   border-radius: ${theme.components.card.radius};
@@ -15,5 +15,3 @@ const CardWrap = styled(Box)(
 export interface CardProps extends StylableComponentProps {
   children: React.ReactNode;
 }
-
-export const Card = (props: CardProps) => <CardWrap {...props} />;

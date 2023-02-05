@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'next-i18next';
 
 import { Gateway, Payment, StylableComponentProps } from '@app/types';
 import { Box, Table } from '@app/components';
@@ -19,6 +20,7 @@ export const PaymentsTable = ({
   projectId,
   ...styleProps
 }: PaymentsTableProps) => {
+  const { t } = useTranslation('reports');
   const renderGatewayColumn = !projectId;
 
   return (
@@ -26,10 +28,10 @@ export const PaymentsTable = ({
       <Table>
         <thead>
           <tr>
-            <th>Date</th>
-            {renderGatewayColumn && <th>Gateway</th>}
-            <th>Transaction ID</th>
-            <th>Amount</th>
+            <th>{t('paymentsTable.date')}</th>
+            {renderGatewayColumn && <th>{t('paymentsTable.gateway')}</th>}
+            <th>{t('paymentsTable.transactionId')}</th>
+            <th>{t('paymentsTable.amount')}</th>
           </tr>
         </thead>
         <tbody>
