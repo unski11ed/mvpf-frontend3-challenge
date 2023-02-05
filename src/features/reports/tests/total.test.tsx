@@ -31,7 +31,7 @@ describe('Total container', () => {
 
     await waitFor(() => {
       expect(
-        getByText(`TOTAL | ${formatUSD(allPaymentsTotal)}`)
+        getByText(`total.general${formatUSD(allPaymentsTotal)}`)
       ).toBeInTheDocument();
     });
   });
@@ -47,7 +47,7 @@ describe('Total container', () => {
 
     await waitFor(() => {
       expect(
-        getByText(`GATEWAY TOTAL | ${formatUSD(gatewayPaymentsTotal)}`)
+        getByText(`total.gateway${formatUSD(gatewayPaymentsTotal)}`)
       ).toBeInTheDocument();
     });
   });
@@ -63,7 +63,7 @@ describe('Total container', () => {
 
     await waitFor(() => {
       expect(
-        getByText(`PROJECT TOTAL | ${formatUSD(projectPaymentsTotal)}`)
+        getByText(`total.project${formatUSD(projectPaymentsTotal)}`)
       ).toBeInTheDocument();
     });
   });
@@ -85,7 +85,7 @@ describe('Total container', () => {
 
     await waitFor(() => {
       expect(
-        getByText(`TOTAL | ${formatUSD(specificPaymentsTotal)}`)
+        getByText(`total.specific${formatUSD(specificPaymentsTotal)}`)
       ).toBeInTheDocument();
     });
   });

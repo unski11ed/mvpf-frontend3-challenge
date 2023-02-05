@@ -29,7 +29,7 @@ export const ReportTotal = ({ filters, ...styleProps }: ReportTotalProps) => {
   if (!filters.gatewayId && !filters.projectId) {
     return (
       <TotalContainer {...commonProps}>
-        {t('total.general', { value: formatUSD(sumPayments(payments ?? [])) })}
+        {`${t('total.general')}${formatUSD(sumPayments(payments ?? []))}`}
       </TotalContainer>
     );
   }
@@ -39,9 +39,9 @@ export const ReportTotal = ({ filters, ...styleProps }: ReportTotalProps) => {
     );
     return (
       <TotalContainer {...commonProps}>
-        {t('total.project', {
-          value: formatUSD(sumPayments(projectPayments ?? [])),
-        })}
+        {`${t('total.project')}${formatUSD(
+          sumPayments(projectPayments ?? [])
+        )}`}
       </TotalContainer>
     );
   }
@@ -51,9 +51,9 @@ export const ReportTotal = ({ filters, ...styleProps }: ReportTotalProps) => {
     );
     return (
       <TotalContainer {...commonProps}>
-        {t('total.gateway', {
-          value: formatUSD(sumPayments(gatewayPayments ?? [])),
-        })}
+        {`${t('total.gateway')}${formatUSD(
+          sumPayments(gatewayPayments ?? [])
+        )}`}
       </TotalContainer>
     );
   }
@@ -64,9 +64,9 @@ export const ReportTotal = ({ filters, ...styleProps }: ReportTotalProps) => {
   );
   return (
     <TotalContainer {...commonProps}>
-      {t('total.specific', {
-        value: formatUSD(sumPayments(specificPayments ?? [])),
-      })}
+      {`${t('total.specific')}${formatUSD(
+        sumPayments(specificPayments ?? [])
+      )}`}
     </TotalContainer>
   );
 

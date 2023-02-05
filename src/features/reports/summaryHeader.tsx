@@ -30,7 +30,7 @@ export const SummaryHeader = withTranslation('reports')(
     <SummaryHeaderWrap style={style} className={className}>
       <Typography>{title}</Typography>
       <Typography>
-        {t('summaryHeader.total', { value: formatUSD(total) })}
+        {`${t('summaryHeader.total')}${formatUSD(total)}`}
       </Typography>
     </SummaryHeaderWrap>
   )

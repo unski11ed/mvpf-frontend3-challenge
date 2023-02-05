@@ -8,9 +8,9 @@
   "filters.allProjects": "All Projects",
   "filters.allGateways": "All Gateways",
   "filters.fromDatePh": "From date",
-  "filters.fromSelected": "From {{value}}",
+  "filters.fromSelected": "From",
   "filters.toDatePh": "To date",
-  "filters.toSelected": "To {{value}}",
+  "filters.toSelected": "To",
   "filters.apply": "Generate Report",
 
   "overview.allProjects": "All Projects",
@@ -21,10 +21,10 @@
   "paymentsTable.transactionId": "Transaction ID",
   "paymentsTable.amount": "Amount",
 
-  "summaryHeader.total": "Total: {{value}}",
+  "summaryHeader.total": "TOTAL: ",
 
-  "total.general": "TOTAL | {{value}}",
-  "total.project": "PROJECT TOTAL | {{value}}",
-  "total.gateway": "GATEWAY TOTAL | {{value}}",
-  "total.specific": "TOTAL | {{value}}"
+  "total.general": "TOTAL | ",
+  "total.project": "PROJECT TOTAL | ",
+  "total.gateway": "GATEWAY TOTAL | ",
+  "total.specific": "TOTAL | "
 }

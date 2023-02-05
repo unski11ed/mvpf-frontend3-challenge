@@ -21,14 +21,15 @@ import emptyDataImage from '@public/empty-data.svg';
 
 const ReportsLayout = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'columned',
-})<{ columned?: boolean }>`
+})<{ columned?: boolean }>(
+  ({ theme, columned }) => `
   height: 100%;
   display: grid;
   grid-auto-rows: 1fr;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: auto 1fr;
-  gap: ${({ theme }) => `${theme.spacing(4)} ${theme.spacing(4)}`};
-  grid-template-areas: ${({ columned }) =>
+  gap: ${theme.spacing(4)} ${theme.spacing(4)};
+  grid-template-areas: ${
     columned
       ? `
         'reports-header reports-header'
@@ -37,15 +38,45 @@ const ReportsLayout = styled(Box, {
       : `
         'reports-header reports-header'
         'reports-details reports-details'
-      `};
-`;
+      `
+  };
+  ${theme.breakpoints.down('md')} {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto auto;
+    grid-template-areas: ${
+      columned
+        ? `
+          'reports-header'
+          'reports-details'
+          'reports-chart'
+        `
+        : `
+          'reports-header'
+          'reports-details'
+          'reports-details'
+        `
+    };
+  }
+`
+);
 
-const ReportsHeader = styled(Box)`
+const ReportsHeader = styled(Box)(
+  ({ theme }) => `
   grid-area: reports-header;
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-`;
+
+  ${theme.breakpoints.down('lg')} {
+    flex-direction: column;
+    align-items: stretch;
+
+    > * + * {
+      margin-top: ${theme.spacing(1)}
+    }
+  }
+`
+);
 
 const HeaderTitle = styled(Box)`
   > p {

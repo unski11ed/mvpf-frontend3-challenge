@@ -6,15 +6,25 @@ import { StylableComponentProps } from '@app/types';
 
 import { Box } from '../box/box';
 
-const LayoutWrap = styled(Box)`
+const LayoutWrap = styled(Box)(
+  ({ theme }) => `
   height: 100vh;
+  max-width: 100vw;
   display: grid;
   grid-template-columns: auto 1fr;
-  grid-template-rows: ${({ theme }) => theme.components.appBar.height} auto;
+  grid-template-rows: ${theme.components.appBar.height} auto;
   grid-template-areas:
     'navbar navbar'
     'sidebar content';
-`;
+
+  ${theme.breakpoints.down('md')} {
+    grid-template-columns: auto;
+    grid-template-areas:
+      'navbar'
+      'content';
+  }
+`
+);
 
 export interface MainLayoutProps extends StylableComponentProps {
   children: React.ReactNode;

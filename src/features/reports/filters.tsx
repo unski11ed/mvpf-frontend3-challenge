@@ -7,11 +7,32 @@ import { useGateways } from '@app/hooks/useGateways';
 import { useProjects } from '@app/hooks/useProjects';
 import { Box, Form, Field, Select, DateInput, Button } from '@app/components';
 
-const FiltersWrap = styled(Box)`
+const FiltersWrap = styled(Box)(
+  ({ theme }) => `
   display: flex;
   align-items: center;
   > * + * {
-    margin-left: ${({ theme }) => theme.spacing(2)};
+    margin-left: ${theme.spacing(2)};
+  }
+  ${theme.breakpoints.down('sm')} {
+    flex-wrap: wrap;
+    margin: 0 -${theme.spacing(1)};
+
+    > * {
+      padding: ${theme.spacing(1)};
+      flex-basis: calc(50% - ${theme.spacing(2)});
+
+      + * {
+        margin-left: 0;
+      }
+    }
+  }
+`
+);
+
+const ButtonWrap = styled(Box)`
+  > * {
+    width: 100%;
   }
 `;
 
@@ -82,7 +103,9 @@ export const ReportFilters = ({
             <DateInput
               {...fieldProps}
               placeholder={t('filters.fromDatePh')}
-              selectedTemplate={(value) => t('filters.fromSelected', { value })}
+              selectedTemplate={(value) =>
+                `${t('filters.fromSelected')} ${value}`
+              }
               minDate="2021-01-01"
               maxDate="2021-12-31"
             />
@@ -93,14 +116,18 @@ export const ReportFilters = ({
             <DateInput
               {...fieldProps}
               placeholder={t('filters.toDatePh')}
-              selectedTemplate={(value) => t('filters.toSelected', { value })}
+              selectedTemplate={(value) =>
+                `${t('filters.toSelected')} ${value}`
+              }
               minDate={formData.from ? formData.from : '2021-12-01'}
               maxDate="2021-12-31"
             />
           )}
         </Field>
 
-        <Button type="submit">{t('filters.apply')}</Button>
+        <ButtonWrap>
+          <Button type="submit">{t('filters.apply')}</Button>
+        </ButtonWrap>
       </FiltersWrap>
     </Form>
   );

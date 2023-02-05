@@ -5,13 +5,19 @@ import { StylableComponentProps } from '@app/types';
 
 import { Box } from '../box';
 
-const AppBarWrap = styled(Box)`
-  height: ${({ theme }) => theme.components.appBar.height};
-  padding: 0 ${({ theme }) => theme.components.appBar.horizontalPadding};
+const AppBarWrap = styled(Box)(
+  ({ theme }) => `
+  height: ${theme.components.appBar.height};
+  padding: 0 ${theme.components.appBar.horizontalPadding};
   display: flex;
   align-items: center;
   justify-content: space-between;
-`;
+
+  ${theme.breakpoints.down('md')} {
+    padding: 0 ${theme.spacing(2)};
+  }
+`
+);
 
 export interface AppBarProps extends StylableComponentProps {
   children: React.ReactNode;

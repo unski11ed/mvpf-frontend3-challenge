@@ -27,7 +27,9 @@ describe('Overview container', () => {
   it('should have a title All projects | All gateways when filters are empty', () => {
     const { getByText } = renderWithProviders(<ReportOverview filters={{}} />);
 
-    expect(getByText('All projects | All gateways')).toBeInTheDocument();
+    expect(
+      getByText('overview.allProjects | overview.allGateways')
+    ).toBeInTheDocument();
   });
 
   it('should have a title All projects | Gateway 1 when gateway is selected', async () => {
@@ -36,7 +38,7 @@ describe('Overview container', () => {
     );
 
     await waitFor(() => {
-      expect(getByText('All projects | Gateway 1')).toBeInTheDocument();
+      expect(getByText('overview.allProjects | Gateway 1')).toBeInTheDocument();
     });
   });
 
@@ -277,7 +279,7 @@ describe('Overview container', () => {
 
         expect(
           within(accordionItem as HTMLElement).getByText(
-            `TOTAL: ${formatUSD(gatewayTotal)}`
+            `summaryHeader.total${formatUSD(gatewayTotal)}`
           )
         ).toBeInTheDocument();
       });
